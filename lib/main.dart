@@ -4,6 +4,9 @@ import 'pages/splash.dart'; // new splash screen
 import 'pages/home.dart';
 import 'pages/about.dart';
 import 'pages/register.dart';
+import 'pages/signin.dart';
+import 'pages/signup.dart';
+import 'pages/inventory.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -14,6 +17,9 @@ void main() {
       '/': (context) => const Home(),          // your existing home page
       '/about': (context) => const About(),
       '/register': (context) => const Register(),
+      '/signin': (context) => const SignIn(),
+      '/signup': (context) => const SignUp(),
+      '/inventory': (context) => const Inventory(),
     },
   ));
 }

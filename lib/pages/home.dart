@@ -1,4 +1,23 @@
+// lib/pages/home.dart
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+// Brand colors — BiasharaPulse Light Canvas & Black-Dominant Palette
+const kOffWhiteCanvas = Color(0xFFFAFAFA);
+const kCharcoalHeading = Color(0xFF121212);
+const kCardSurface = Color(0xFFF4F4F5);
+const kBorderSubtle = Color(0xFFE4E4E7);
+const kMutedText = Color(0xFF71717A);
+
+// Black & Dark Red Palette
+const kBlackBase = Color(0xFF0A0A0A);
+const kBlackRich = Color(0xFF141414);
+const kBurgundyGlow = Color(0xFF4A000A);
+const kCherryRed = Color(0xFFB0142B);
+
+// Blending Accent Color — Warm Amber Gold for Primary CTA
+const kAmberGold = Color(0xFFD4A373);
+const kAmberGoldDark = Color(0xFFB8860B);
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -6,109 +25,281 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     body: Stack(
-      fit: StackFit.expand,
-      children: [
-        // Loads an image directly from a URL instead of a local file
-        Image.asset(
-          'assets/images/home_bg.jpeg',
-          fit: BoxFit.cover, // scales and crops the image to fill the space without distorting it
-        ),
-
-        //Dark overlay so text stays readable
-        Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.black.withOpacity(0.4),
-                  Colors.black.withOpacity(0.85),
-                ],
+      backgroundColor: kOffWhiteCanvas,
+      body: Stack(
+        children: [
+          // ── Asymmetric Curved Black-Dominant Hero Section ───────────
+          ClipPath(
+            clipper: AsymmetricHomeClipper(),
+            child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.52,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    kBlackBase,
+                    kBlackRich,
+                    kBurgundyGlow,
+                  ],
+                  stops: [0.0, 0.7, 1.0],
+                ),
               ),
             ),
-        ),
+          ),
 
-        //content
-        // SafeArea keeps content clear of notches, status bars, and system UI intrusions
-        SafeArea(
-          child: Padding(
-            // Horizontal breathing room so text/buttons don't touch screen edges
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: Column(
-              // Pushes all children to the bottom of the available space
-              mainAxisAlignment: MainAxisAlignment.end,
-              // Left-aligns children (Column's cross axis is horizontal)
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Main heading text
-                const Text(
-                  'Managing your business\njust got easier',
-                  style: TextStyle(
-                    color: Colors.white,        // white text over the dark image overlay
-                    fontSize: 26,                // large, heading-sized
-                    fontWeight: FontWeight.w800, // bold weight
-                    height: 1.2,                 // line spacing between the two lines
-                  ),
-                ),
-
-                // Vertical gap between heading and paragraph
-                const SizedBox(height: 12),
-
-                // Supporting paragraph below the heading
-                const Text(
-                  "From stock counts to sales, everything about your business lives in one place. Know what's moving, what's running low, and what needs your attention — before it becomes a problem",
-                  style: TextStyle(
-                    color: Color(0xFFB0B0B0), // muted grey so it doesn't compete with the heading
-                    fontSize: 12,
-                    height: 1.2, // more relaxed line spacing for readability
-                  ),
-                ),
-
-                // Larger gap before the button
-                const SizedBox(height: 32),
-
-                // SizedBox forces the button to stretch full width
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    // Custom styling for the button itself
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,  // white background, as requested
-                      foregroundColor: Colors.black,  // black text/icon color
-                      padding: const EdgeInsets.symmetric(vertical: 16), // tall tap target
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15), // rounded corners
+          // ── Main Content Layout ────────────────────────────────────
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 10,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // ── Top Navigation Bar ──────────────────────────────
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.home_outlined,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onPressed: () {},
                       ),
-                      elevation: 0, // flat, no drop shadow
-                    ),
-                    // What happens when the button is tapped — this is the page-to-page navigation
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/about'); // navigate to the about page route
-                    },
-                    // Row lets us place an icon and text side by side inside the button
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center, // keeps icon + text centered as a pair
-                      children: const [
-                        Icon(Icons.arrow_forward, size: 14), // arrow icon, sits to the left of the text
-                        SizedBox(width: 8), // small horizontal gap between icon and text
+                      RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.orbitron(
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 0.8,
+                          ),
+                          children: const [
+                            TextSpan(
+                              text: 'biashara',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'pulse',
+                              style: TextStyle(
+                                color: kCherryRed,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.menu,
+                          color: Colors.white,
+                          size: 22,
+                        ),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+
+                  // ── Hero Content inside Black Header ──────────────────
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.15),
+                            ),
+                          ),
+                          child: Text(
+                            'Smart Inventory Management',
+                            style: GoogleFonts.inter(
+                              color: Colors.white.withOpacity(0.9),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
                         Text(
-                          'Get Started',
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900),
+                          'Managing your business\njust got easier',
+                          style: GoogleFonts.orbitron(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            height: 1.25,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ),
 
-                // Bottom padding so the button isn't flush against the screen edge
-                const SizedBox(height: 40),
-              ],
+                  // ── Content Card overlapping off-white canvas ─────────
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: kBorderSubtle),
+                      boxShadow: [
+                        BoxShadow(
+                          color: kBlackBase.withOpacity(0.06),
+                          blurRadius: 16,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "From stock counts to sales, everything about your business lives in one place. Know what's moving, what's running low, and what needs your attention — before it becomes a problem.",
+                          style: GoogleFonts.inter(
+                            color: kMutedText,
+                            fontSize: 11.5,
+                            height: 1.55,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Quick Value Highlights Row
+                        Row(
+                          children: [
+                            _featureBadge(
+                              Icons.inventory_2_outlined,
+                              'Live Stock',
+                            ),
+                            const SizedBox(width: 8),
+                            _featureBadge(
+                              Icons.insights_outlined,
+                              'Real Analytics',
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  // ── Bottom Action Button (Warm Amber Gold) ─────────────
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: kAmberGold,
+                            foregroundColor: kBlackBase,
+                            padding: const EdgeInsets.symmetric(vertical: 13),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 0,
+                          ),
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/register');
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Get Started',
+                                style: GoogleFonts.inter(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              const Icon(
+                                Icons.arrow_forward_rounded,
+                                size: 14,
+                                color: kBlackBase,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
-        )
-      ]
-     ),
+        ],
+      ),
     );
   }
+
+  Widget _featureBadge(IconData icon, String label) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+        decoration: BoxDecoration(
+          color: kCardSurface,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: kBorderSubtle),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 14, color: kAmberGoldDark),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: GoogleFonts.inter(
+                color: kCharcoalHeading,
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Asymmetric Wave Curve Clipper ──────────────────────────────────────────
+class AsymmetricHomeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.lineTo(0, size.height - 40);
+
+    // Asymmetric wave curve dipping deeper on the right side
+    path.cubicTo(
+      size.width * 0.35,
+      size.height - 80,
+      size.width * 0.70,
+      size.height + 20,
+      size.width,
+      size.height - 35,
+    );
+
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
